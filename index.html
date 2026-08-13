@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mochila | Minha Mochila Digital</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --verde-escuro: #14532d;
+            --verde: #16a34a;
+            --verde-claro: #22c55e;
+            --verde-suave: #dcfce7;
+            --verde-fundo: #f0fdf4;
+            --branco: #ffffff;
+            --cinza: #64748b;
+            --cinza-claro: #e2e8f0;
+            --cinza-fundo: #f8fafc;
+            --vermelho: #dc2626;
+            --sombra: 0 10px 30px rgba(20, 83, 45, 0.08);
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--verde-fundo);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           TELA DE LOGIN
+        ========================= */
+
+        #loginScreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background:
+                radial-gradient(circle at top left, #bbf7d0, transparent 35%),
+                linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: var(--sombra);
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--verde);
+            color: white;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        }
+
+        .login-card h1 {
+            color: var(--verde-escuro);
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: var(--cinza);
+            margin-bottom: 28px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 12px;
+            outline: none;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .login-card input:focus {
+            border-color: var(--verde);
+        }
+
+        /* =========================
+           LAYOUT PRINCIPAL
+        ========================= */
+
+        #app {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--verde-escuro);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 25px 16px;
+            z-index: 20;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 30px;
+        }
+
+        .sidebar-logo-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 23px;
+        }
+
+        .menu-title {
+            color: #bbf7d0;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 15px 12px 8px;
+            text-transform: uppercase;
+        }
+
+        .menu-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #dcfce7;
+            padding: 13px 14px;
+            border-radius: 11px;
+            text-align: left;
+            margin-bottom: 4px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: rgba(255,255,255,0.13);
+            color: white;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 20px;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        /* =========================
+           TOPO
+        ========================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 29px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: var(--cinza);
+        }
+
+        .user-badge {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--verde);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* =========================
+           CARDS DE ESTATÍSTICAS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            box-shadow: var(--sombra);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--verde-suave);
+            color: var(--verde-escuro);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 23px;
+        }
+
+        .stat-card span {
+            color: var(--cinza);
+            font-size: 13px;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 25px;
+            color: var(--verde-escuro);
+            margin-top: 3px;
+        }
+
+        /* =========================
+           BOTÕES
+        ========================= */
+
+        .btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 11px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--verde);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #15803d;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--verde-suave);
+            color: var(--verde-escuro);
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: var(--vermelho);
+        }
+
+        .btn-small {
+            padding: 8px 11px;
+            font-size: 12px;
+        }
+
+        /* =========================
+           SEÇÕES
+        ========================= */
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            color: #0f172a;
+        }
+
+        /* =========================
+           MATÉRIAS
+        ========================= */
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .subject-card {
+            background: white;
+            border-radius: 19px;
+            padding: 22px;
+            box-shadow: var(--sombra);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .subject-card:hover {
+            border-color: #86efac;
+            transform: translateY(-3px);
+        }
+
+        .subject-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--verde-suave);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 17px;
+        }
+
+        .subject-card h3 {
+            margin-bottom: 7px;
+            color: var(--verde-escuro);
+        }
+
+        .subject-card p {
+            font-size: 13px;
+            color: var(--cinza);
+        }
+
+        .delete-subject {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 17px;
+        }
+
+        .delete-subject:hover {
+            color: var(--vermelho);
+        }
+
+        /* =========================
+           CADERNO
+        ========================= */
+
+        .notebook-header {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            box-shadow: var(--sombra);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: var(--verde-escuro);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .notebook-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notebook-title h2 {
+            color: var(--verde-escuro);
+        }
+
+        .search {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px 15px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 11px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: var(--verde);
+        }
+
+        .notes-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: var(--sombra);
+        }
+
+        .note-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 13px;
+        }
+
+        .note-title {
+            color: var(--verde-escuro);
+            font-size: 18px;
+        }
+
+        .note-date {
+            font-size: 11px;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
+        .note-content {
+            color: #475569;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        /* =========================
+           ARQUIVOS
+        ========================= */
+
+        .files-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--cinza-claro);
+        }
+
+        .files-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--verde-escuro);
+            margin-bottom: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--cinza-fundo);
+            padding: 10px 12px;
+            border-radius: 9px;
+            margin-top: 7px;
+            gap: 10px;
+        }
+
+        .file-name {
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        /* =========================
+           MODAIS
+        ========================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 22px;
+            padding: 28px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            color: var(--verde-escuro);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #334155;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: var(--verde);
+        }
+
+        textarea.form-control {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* =========================
+           DRAG & DROP
+        ========================= */
+
+        .drop-zone {
+            border: 2px dashed #86efac;
+            background: var(--verde-fundo);
+            border-radius: 13px;
+            padding: 25px;
+            text-align: center;
+            color: var(--cinza);
+            cursor: pointer;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--verde);
+            background: var(--verde-suave);
+        }
+
+        .drop-zone input {
+            display: none;
+        }
+
+        /* =========================
+           VAZIO
+        ========================= */
+
+        .empty {
+            background: white;
+            padding: 50px 20px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: var(--sombra);
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .empty h3 {
+            color: var(--verde-escuro);
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            color: var(--cinza);
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .mobile-menu {
+                display: block;
+                border: none;
+                background: var(--verde);
+                color: white;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                font-size: 20px;
+            }
+
+            .topbar {
+                gap: 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .user-badge {
+                display: none;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .login-card {
+                padding: 28px 20px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+                gap: 12px;
+                flex-direction: column;
+            }
+
+            .notebook-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .note-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div id="loginScreen">
+
+    <div class="login-card">
+
+        <div class="logo">
+            🎒
+        </div>
+
+        <h1>Mochila</h1>
+
+        <p>
+            Sua mochila digital de estudos.
+        </p>
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Digite seu nome"
+        >
+
+        <button
+            class="btn btn-primary"
+            style="width:100%;"
+            onclick="enterMochila()"
+        >
+            Entrar na minha mochila
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     APLICAÇÃO
+========================= -->
+
+<div id="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="sidebar-logo-icon">
+                🎒
+            </div>
+
+            <h2>Mochila</h2>
+
+        </div>
+
+        <div class="menu-title">
+            Menu
+        </div>
+
+        <button
+            class="menu-item active"
+            onclick="showSection('inicio', this)"
+        >
+            🏠 Início
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="showSection('materias', this)"
+        >
+            📚 Minhas matérias
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="showSection('arquivos', this)"
+        >
+            📎 Meus arquivos
+        </button>
+
+        <div class="sidebar-bottom">
+
+            <button
+                class="menu-item logout-btn"
+                onclick="logout()"
+            >
+                🚪 Sair
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTEÚDO -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div class="welcome">
+
+                <h1 id="welcomeTitle">
+                    Olá!
+                </h1>
+
+                <p>
+                    Organize seus estudos na sua mochila digital.
+                </p>
+
+            </div>
+
+            <div
+                class="user-badge"
+                id="userInitial"
+            >
+                ?
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             INÍCIO
+        ====================== -->
+
+        <section
+            id="inicio"
+            class="section active"
+        >
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📚
+                    </div>
+
+                    <div>
+                        <span>Matérias</span>
+                        <strong id="statSubjects">0</strong>
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📝
+                    </div>
+
+                    <div>
+                        <span>Anotações</span>
+                        <strong id="statNotes">0</strong>
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📎
+                    </div>
+
+                    <div>
+                        <span>Arquivos</span>
+                        <strong id="statFiles">0</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-header">
+
+                <h2>
+                    Acesso rápido
+                </h2>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="openSubjectModal()"
+                >
+                    + Nova matéria
+                </button>
+
+            </div>
+
+            <div
+                id="homeSubjects"
+                class="subjects-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================
+             MATÉRIAS
+        ====================== -->
+
+        <section
+            id="materias"
+            class="section"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Minhas matérias</h2>
+                    <p style="color:#64748b; margin-top:5px;">
+                        Entre em uma matéria para acessar seu caderno.
+                    </p>
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="openSubjectModal()"
+                >
+                    + Nova matéria
+                </button>
+
+            </div>
+
+            <div
+                id="subjectsGrid"
+                class="subjects-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================
+             CADERNO
+        ====================== -->
+
+        <section
+            id="caderno"
+            class="section"
+        >
+
+            <div class="notebook-header">
+
+                <button
+                    class="back-btn"
+                    onclick="backToSubjects()"
+                >
+                    ← Voltar para matérias
+                </button>
+
+                <div class="notebook-title">
+
+                    <div>
+                        <h2 id="notebookName">
+                            Caderno
+                        </h2>
+
+                        <p
+                            id="notebookDescription"
+                            style="color:#64748b; margin-top:5px;"
+                        ></p>
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openNoteModal()"
+                    >
+                        + Nova anotação
+                    </button>
+
+                </div>
+
+                <input
+                    type="text"
+                    id="noteSearch"
+                    class="search"
+                    placeholder="🔎 Pesquisar nas minhas anotações..."
+                    oninput="renderNotes()"
+                >
+
+            </div>
+
+            <div
+                id="notesList"
+                class="notes-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================
+             ARQUIVOS
+        ====================== -->
+
+        <section
+            id="arquivos"
+            class="section"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Meus arquivos</h2>
+                    <p style="color:#64748b; margin-top:5px;">
+                        Todos os arquivos anexados aos seus cadernos.
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="allFiles"
+                class="notes-list"
+            ></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     MODAL MATÉRIA
+========================= -->
+
+<div
+    id="subjectModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <h2>📚 Nova matéria</h2>
+
+        <div class="form-group">
+
+            <label>
+                Nome da matéria
+            </label>
+
+            <input
+                type="text"
+                id="subjectName"
+                class="form-control"
+                placeholder="Ex: Matemática"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Descrição
+            </label>
+
+            <input
+                type="text"
+                id="subjectDescription"
+                class="form-control"
+                placeholder="Ex: Álgebra, geometria..."
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Ícone
+            </label>
+
+            <input
+                type="text"
+                id="subjectIcon"
+                class="form-control"
+                value="📚"
+                maxlength="2"
+            >
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeSubjectModal()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="createSubject()"
+            >
+                Criar matéria
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MODAL ANOTAÇÃO
+========================= -->
+
+<div
+    id="noteModal"
+    class="modal-overlay"
+>
+
+    <div class="modal">
+
+        <h2>📝 Nova anotação</h2>
+
+        <div class="form-group">
+
+            <label>
+                Título
+            </label>
+
+            <input
+                type="text"
+                id="noteTitle"
+                class="form-control"
+                placeholder="Ex: Resumo da aula"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Sua anotação
+            </label>
+
+            <textarea
+                id="noteContent"
+                class="form-control"
+                placeholder="Escreva aqui tudo que você aprendeu..."
+            ></textarea>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Anexar arquivos
+            </label>
+
+            <label class="drop-zone">
+
+                📎 Clique aqui para escolher arquivos
+
+                <br>
+
+                <small>
+                    PDF, imagens, documentos, apresentações etc.
+                </small>
+
+                <input
+                    type="file"
+                    id="noteFiles"
+                    multiple
+                    onchange="showSelectedFiles()"
+                >
+
+            </label>
+
+            <div
+                id="selectedFiles"
+                style="margin-top:10px;"
+            ></div>
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeNoteModal()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="createNote()"
+            >
+                Salvar anotação
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   DADOS
+===================================== */
+
+let data = {
+    user: localStorage.getItem("mochila_user") || "",
+    subjects: JSON.parse(
+        localStorage.getItem("mochila_subjects") || "[]"
+    ),
+    notes: JSON.parse(
+        localStorage.getItem("mochila_notes") || "[]"
+    )
+};
+
+let currentSubjectId = null;
+
+
+/* =====================================
+   BANCO DE ARQUIVOS - IndexedDB
+===================================== */
+
+let db;
+
+const request = indexedDB.open("MochilaDatabase", 1);
+
+request.onupgradeneeded = function(event) {
+
+    db = event.target.result;
+
+    if (!db.objectStoreNames.contains("files")) {
+
+        db.createObjectStore("files", {
+            keyPath: "id"
+        });
+
+    }
+};
+
+request.onsuccess = function(event) {
+
+    db = event.target.result;
+
+    updateStats();
+    renderAllFiles();
+
+};
+
+request.onerror = function() {
+
+    console.log("Erro ao abrir banco de arquivos.");
+
+};
+
+
+/* =====================================
+   LOGIN
+===================================== */
+
+function enterMochila() {
+
+    const name =
+        document.getElementById("studentName").value.trim();
+
+    if (!name) {
+
+        alert("Digite seu nome para entrar.");
+
+        return;
+
+    }
+
+    data.user = name;
+
+    localStorage.setItem(
+        "mochila_user",
+        name
+    );
+
+    startApp();
+
+}
+
+
+function startApp() {
+
+    document.getElementById("loginScreen").style.display = "none";
+
+    document.getElementById("app").style.display = "block";
+
+    document.getElementById("welcomeTitle").textContent =
+        "Olá, " + data.user + "! 👋";
+
+    document.getElementById("userInitial").textContent =
+        data.user.charAt(0).toUpperCase();
+
+    renderSubjects();
+    updateStats();
+
+}
+
+
+function logout() {
+
+    document.getElementById("app").style.display = "none";
+
+    document.getElementById("loginScreen").style.display = "flex";
+
+}
+
+
+/* =====================================
+   SEÇÕES
+===================================== */
+
+function showSection(sectionId, button) {
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+            section.classList.remove("active");
+        });
+
+    document
+        .getElementById(sectionId)
+        .classList.add("active");
+
+    document
+        .querySelectorAll(".menu-item")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+    renderSubjects();
+
+    updateStats();
+
+    if (sectionId === "arquivos") {
+
+        renderAllFiles();
+
+    }
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
+
+}
+
+
+function toggleSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+/* =====================================
+   MATÉRIAS
+===================================== */
+
+function openSubjectModal() {
+
+    document
+        .getElementById("subjectModal")
+        .classList.add("show");
+
+    document
+        .getElementById("subjectName")
+        .focus();
+
+}
+
+
+function closeSubjectModal() {
+
+    document
+        .getElementById("subjectModal")
+        .classList.remove("show");
+
+    document.getElementById("subjectName").value = "";
+
+    document.getElementById("subjectDescription").value = "";
+
+    document.getElementById("subjectIcon").value = "📚";
+
+}
+
+
+function createSubject() {
+
+    const name =
+        document
+            .getElementById("subjectName")
+            .value
+            .trim();
+
+    const description =
+        document
+            .getElementById("subjectDescription")
+            .value
+            .trim();
+
+    const icon =
+        document
+            .getElementById("subjectIcon")
+            .value
+            .trim() || "📚";
+
+
+    if (!name) {
+
+        alert("Digite o nome da matéria.");
+
+        return;
+
+    }
+
+
+    const subject = {
+
+        id: Date.now().toString(),
+
+        name,
+
+        description,
+
+        icon
+
+    };
+
+
+    data.subjects.push(subject);
+
+    saveData();
+
+    closeSubjectModal();
+
+    renderSubjects();
+
+    updateStats();
+
+}
+
+
+function deleteSubject(id, event) {
+
+    event.stopPropagation();
+
+    const subject =
+        data.subjects.find(s => s.id === id);
+
+    if (!subject) return;
+
+
+    const confirmDelete =
+        confirm(
+            `Deseja realmente excluir "${subject.name}"? Todas as anotações dessa matéria também serão excluídas.`
+        );
+
+
+    if (!confirmDelete) return;
+
+
+    data.subjects =
+        data.subjects.filter(
+            s => s.id !== id
+        );
+
+
+    const notesToDelete =
+        data.notes.filter(
+            n => n.subjectId === id
+        );
+
+
+    notesToDelete.forEach(note => {
+
+        if (note.fileIds) {
+
+            note.fileIds.forEach(
+                fileId => deleteFileFromDB(fileId)
+            );
+
+        }
+
+    });
+
+
+    data.notes =
+        data.notes.filter(
+            n => n.subjectId !== id
+        );
+
+
+    saveData();
+
+    renderSubjects();
+
+    updateStats();
+
+    renderAllFiles();
+
+}
+
+
+/* =====================================
+   RENDER MATÉRIAS
+===================================== */
+
+function renderSubjects() {
+
+    const containers = [
+
+        document.getElementById("subjectsGrid"),
+
+        document.getElementById("homeSubjects")
+
+    ];
+
+
+    containers.forEach(container => {
+
+        if (!container) return;
+
+
+        if (data.subjects.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        🎒
+                    </div>
+
+                    <h3>
+                        Sua mochila está vazia
+                    </h3>
+
+                    <p>
+                        Comece criando sua primeira matéria.
+                    </p>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openSubjectModal()"
+                    >
+                        + Criar primeira matéria
+                    </button>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            data.subjects.map(subject => {
+
+                const notesCount =
+                    data.notes.filter(
+                        n => n.subjectId === subject.id
+                    ).length;
+
+
+                return `
+
+                    <div
+                        class="subject-card"
+                        onclick="openNotebook('${subject.id}')"
+                    >
+
+                        <button
+                            class="delete-subject"
+                            onclick="deleteSubject('${subject.id}', event)"
+                            title="Excluir matéria"
+                        >
+                            🗑️
+                        </button>
+
+                        <div class="subject-icon">
+                            ${escapeHTML(subject.icon)}
+                        </div>
+
+                        <h3>
+                            ${escapeHTML(subject.name)}
+                        </h3>
+
+                        <p>
+                            ${escapeHTML(
+                                subject.description ||
+                                "Caderno de estudos"
+                            )}
+                        </p>
+
+                        <p style="margin-top:12px;">
+                            📝 ${notesCount} anotação(ões)
+                        </p>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    });
+
+}
+
+
+/* =====================================
+   ABRIR CADERNO
+===================================== */
+
+function openNotebook(subjectId) {
+
+    currentSubjectId = subjectId;
+
+    const subject =
+        data.subjects.find(
+            s => s.id === subjectId
+        );
+
+
+    if (!subject) return;
+
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+            section.classList.remove("active");
+        });
+
+
+    document
+        .getElementById("caderno")
+        .classList.add("active");
+
+
+    document.getElementById("notebookName").textContent =
+        subject.icon + " " + subject.name;
+
+
+    document.getElementById("notebookDescription").textContent =
+        subject.description ||
+        "Seu caderno digital";
+
+
+    document.getElementById("noteSearch").value = "";
+
+
+    renderNotes();
+
+}
+
+
+function backToSubjects() {
+
+    currentSubjectId = null;
+
+    showSection("materias");
+
+}
+
+
+/* =====================================
+   ANOTAÇÕES
+===================================== */
+
+function openNoteModal() {
+
+    if (!currentSubjectId) {
+
+        alert("Escolha uma matéria primeiro.");
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("noteModal")
+        .classList.add("show");
+
+
+    document.getElementById("noteTitle").focus();
+
+}
+
+
+function closeNoteModal() {
+
+    document
+        .getElementById("noteModal")
+        .classList.remove("show");
+
+    document.getElementById("noteTitle").value = "";
+
+    document.getElementById("noteContent").value = "";
+
+    document.getElementById("noteFiles").value = "";
+
+    document.getElementById("selectedFiles").innerHTML = "";
+
+}
+
+
+function showSelectedFiles() {
+
+    const files =
+        document.getElementById("noteFiles").files;
+
+
+    const container =
+        document.getElementById("selectedFiles");
+
+
+    if (!files.length) {
+
+        container.innerHTML = "";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        Array.from(files)
+            .map(file => `
+
+                <div
+                    style="
+                        background:#f0fdf4;
+                        padding:8px 10px;
+                        border-radius:8px;
+                        margin-top:5px;
+                        font-size:13px;
+                    "
+                >
+                    📎 ${escapeHTML(file.name)}
+                </div>
+
+            `)
+            .join("");
+
+}
+
+
+async function createNote() {
+
+    const title =
+        document
+            .getElementById("noteTitle")
+            .value
+            .trim();
+
+
+    const content =
+        document
+            .getElementById("noteContent")
+            .value
+            .trim();
+
+
+    if (!title && !content) {
+
+        alert("Escreva alguma coisa na anotação.");
+
+        return;
+
+    }
+
+
+    const files =
+        Array.from(
+            document.getElementById("noteFiles").files
+        );
+
+
+    const fileIds = [];
+
+
+    for (const file of files) {
+
+        const id =
+            Date.now().toString() +
+            Math.random().toString(16).slice(2);
+
+
+        await saveFileToDB({
+
+            id,
+
+            noteId: null,
+
+            subjectId: currentSubjectId,
+
+            name: file.name,
+
+            type: file.type,
+
+            size: file.size,
+
+            file
+
+        });
+
+
+        fileIds.push(id);
+
+    }
+
+
+    const note = {
+
+        id: Date.now().toString(),
+
+        subjectId: currentSubjectId,
+
+        title: title || "Anotação sem título",
+
+        content,
+
+        date: new Date().toISOString(),
+
+        fileIds
+
+    };
+
+
+    data.notes.unshift(note);
+
+    saveData();
+
+
+    closeNoteModal();
+
+    renderNotes();
+
+    updateStats();
+
+    renderAllFiles();
+
+}
+
+
+/* =====================================
+   RENDER ANOTAÇÕES
+===================================== */
+
+function renderNotes() {
+
+    const container =
+        document.getElementById("notesList");
+
+
+    if (!currentSubjectId) return;
+
+
+    const search =
+        document
+            .getElementById("noteSearch")
+            .value
+            .toLowerCase();
+
+
+    let notes =
+        data.notes.filter(
+            note =>
+                note.subjectId === currentSubjectId
+        );
+
+
+    if (search) {
+
+        notes =
+            notes.filter(note =>
+
+                note.title
+                    .toLowerCase()
+                    .includes(search)
+
+                ||
+
+                note.content
+                    .toLowerCase()
+                    .includes(search)
+
+            );
+
+    }
+
+
+    if (notes.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📝
+                </div>
+
+                <h3>
+                    Nenhuma anotação ainda
+                </h3>
+
+                <p>
+                    Comece escrevendo sua primeira anotação.
+                </p>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="openNoteModal()"
+                >
+                    + Nova anotação
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        notes.map(note => {
+
+            const filesHTML =
+                getFilesForNote(note);
+
+
+            return `
+
+                <div class="note-card">
+
+                    <div class="note-top">
+
+                        <h3 class="note-title">
+                            ${escapeHTML(note.title)}
+                        </h3>
+
+                        <span class="note-date">
+                            ${formatDate(note.date)}
+                        </span>
+
+                    </div>
+
+                    <div class="note-content">
+                        ${escapeHTML(note.content)}
+                    </div>
+
+                    ${filesHTML}
+
+                    <div class="note-actions">
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteNote('${note.id}')"
+                        >
+                            🗑️ Excluir
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function getFilesForNote(note) {
+
+    if (!note.fileIds || note.fileIds.length === 0) {
+
+        return "";
+
+    }
+
+
+    return `
+
+        <div class="files-section">
+
+            <div class="files-title">
+                📎 Arquivos anexados
+            </div>
+
+            <div id="files-${note.id}">
+                Carregando arquivos...
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================
+   EXCLUIR ANOTAÇÃO
+===================================== */
+
+function deleteNote(noteId) {
+
+    const note =
+        data.notes.find(
+            n => n.id === noteId
+        );
+
+
+    if (!note) return;
+
+
+    if (!confirm("Deseja excluir esta anotação?")) {
+
+        return;
+
+    }
+
+
+    if (note.fileIds) {
+
+        note.fileIds.forEach(
+            id => deleteFileFromDB(id)
+        );
+
+    }
+
+
+    data.notes =
+        data.notes.filter(
+            n => n.id !== noteId
+        );
+
+
+    saveData();
+
+    renderNotes();
+
+    updateStats();
+
+    renderAllFiles();
+
+}
+
+
+/* =====================================
+   INDEXEDDB - ARQUIVOS
+===================================== */
+
+function saveFileToDB(fileData) {
+
+    return new Promise((resolve, reject) => {
+
+        const transaction =
+            db.transaction(
+                ["files"],
+                "readwrite"
+            );
+
+
+        const store =
+            transaction.objectStore("files");
+
+
+        store.put(fileData);
+
+
+        transaction.oncomplete = () => resolve();
+
+        transaction.onerror = () => reject();
+
+    });
+
+}
+
+
+function getFileFromDB(id) {
+
+    return new Promise((resolve, reject) => {
+
+        const transaction =
+            db.transaction(
+                ["files"],
+                "readonly"
+            );
+
+
+        const store =
+            transaction.objectStore("files");
+
+
+        const request =
+            store.get(id);
+
+
+        request.onsuccess =
+            () => resolve(request.result);
+
+
+        request.onerror =
+            () => reject();
+
+    });
+
+}
+
+
+function deleteFileFromDB(id) {
+
+    if (!db) return;
+
+
+    const transaction =
+        db.transaction(
+            ["files"],
+            "readwrite"
+        );
+
+
+    const store =
+        transaction.objectStore("files");
+
+
+    store.delete(id);
+
+}
+
+
+/* =====================================
+   MOSTRAR ARQUIVOS DAS NOTAS
+===================================== */
+
+async function loadNoteFiles() {
+
+    const notes =
+        data.notes.filter(
+            n => n.subjectId === currentSubjectId
+        );
+
+
+    for (const note of notes) {
+
+        if (!note.fileIds) continue;
+
+
+        const container =
+            document.getElementById(
+                `files-${note.id}`
+            );
+
+
+        if (!container) continue;
+
+
+        const files = [];
+
+
+        for (const id of note.fileIds) {
+
+            try {
+
+                const file =
+                    await getFileFromDB(id);
+
+                if (file) files.push(file);
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+
+
+        container.innerHTML =
+            files.map(file => `
+
+                <div class="file-item">
+
+                    <div class="file-name">
+                        📄 ${escapeHTML(file.name)}
+                        <small style="color:#94a3b8;">
+                            (${formatBytes(file.size)})
+                        </small>
+                    </div>
+
+                    <div class="file-actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick="downloadFile('${file.id}')"
+                        >
+                            Abrir
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteAttachedFile('${file.id}', '${note.id}')"
+                        >
+                            🗑️
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }
+
+}
+
+
+/* =====================================
+   DOWNLOAD / ABRIR ARQUIVO
+===================================== */
+
+async function downloadFile(id) {
+
+    const file =
+        await getFileFromDB(id);
+
+
+    if (!file) {
+
+        alert("Arquivo não encontrado.");
+
+        return;
+
+    }
+
+
+    const url =
+        URL.createObjectURL(file.file);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+    link.download = file.name;
+
+    link.target = "_blank";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+
+    setTimeout(
+        () => URL.revokeObjectURL(url),
+        1000
+    );
+
+}
+
+
+async function deleteAttachedFile(fileId, noteId) {
+
+    if (!confirm("Excluir este arquivo?")) {
+
+        return;
+
+    }
+
+
+    const note =
+        data.notes.find(
+            n => n.id === noteId
+        );
+
+
+    if (note && note.fileIds) {
+
+        note.fileIds =
+            note.fileIds.filter(
+                id => id !== fileId
+            );
+
+    }
+
+
+    deleteFileFromDB(fileId);
+
+    saveData();
+
+    renderNotes();
+
+    renderAllFiles();
+
+}
+
+
+/* =====================================
+   TODOS OS ARQUIVOS
+===================================== */
+
+async function renderAllFiles() {
+
+    const container =
+        document.getElementById("allFiles");
+
+
+    if (!container || !db) return;
+
+
+    let files = [];
+
+
+    try {
+
+        files =
+            await new Promise((resolve, reject) => {
+
+                const transaction =
+                    db.transaction(
+                        ["files"],
+                        "readonly"
+                    );
+
+
+                const store =
+                    transaction.objectStore("files");
+
+
+                const request =
+                    store.getAll();
+
+
+                request.onsuccess =
+                    () => resolve(request.result);
+
+
+                request.onerror =
+                    () => reject();
+
+            });
+
+    } catch {
+
+        return;
+
+    }
+
+
+    if (files.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📎
+                </div>
+
+                <h3>
+                    Nenhum arquivo
+                </h3>
+
+                <p>
+                    Os arquivos anexados às suas anotações aparecerão aqui.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        files.map(file => {
+
+            const subject =
+                data.subjects.find(
+                    s => s.id === file.subjectId
+                );
+
+
+            return `
+
+                <div class="note-card">
+
+                    <div class="note-top">
+
+                        <h3 class="note-title">
+                            📎 ${escapeHTML(file.name)}
+                        </h3>
+
+                        <span class="note-date">
+                            ${formatBytes(file.size)}
+                        </span>
+
+                    </div>
+
+                    <p style="color:#64748b;">
+
+                        Matéria:
+                        <strong>
+                            ${escapeHTML(
+                                subject
+                                    ? subject.name
+                                    : "Sem matéria"
+                            )}
+                        </strong>
+
+                    </p>
+
+                    <div class="note-actions">
+
+                        <button
+                            class="btn btn-primary btn-small"
+                            onclick="downloadFile('${file.id}')"
+                        >
+                            📂 Abrir arquivo
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =====================================
+   ESTATÍSTICAS
+===================================== */
+
+async function updateStats() {
+
+    document.getElementById(
+        "statSubjects"
+    ).textContent =
+        data.subjects.length;
+
+
+    document.getElementById(
+        "statNotes"
+    ).textContent =
+        data.notes.length;
+
+
+    if (!db) return;
+
+
+    try {
+
+        const files =
+            await new Promise((resolve, reject) => {
+
+                const transaction =
+                    db.transaction(
+                        ["files"],
+                        "readonly"
+                    );
+
+
+                const store =
+                    transaction.objectStore("files");
+
+
+                const request =
+                    store.getAll();
+
+
+                request.onsuccess =
+                    () => resolve(request.result);
+
+
+                request.onerror =
+                    () => reject();
+
+            });
+
+
+        document.getElementById(
+            "statFiles"
+        ).textContent =
+            files.length;
+
+    } catch {}
+
+}
+
+
+/* =====================================
+   SALVAR DADOS
+===================================== */
+
+function saveData() {
+
+    localStorage.setItem(
+        "mochila_subjects",
+        JSON.stringify(data.subjects)
+    );
+
+
+    localStorage.setItem(
+        "mochila_notes",
+        JSON.stringify(data.notes)
+    );
+
+}
+
+
+/* =====================================
+   FUNÇÕES AUXILIARES
+===================================== */
+
+function formatDate(date) {
+
+    return new Date(date).toLocaleString(
+        "pt-BR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+function formatBytes(bytes) {
+
+    if (bytes === 0) return "0 Bytes";
+
+    const sizes =
+        ["Bytes", "KB", "MB", "GB"];
+
+    const i =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+        Math.round(
+            bytes /
+            Math.pow(1024, i) *
+            100
+        ) / 100
+        +
+        " " +
+        sizes[i]
+    );
+
+}
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================
+   FECHAR MODAL CLICANDO FORA
+===================================== */
+
+document
+    .querySelectorAll(".modal-overlay")
+    .forEach(modal => {
+
+        modal.addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === modal) {
+
+                    modal.classList.remove("show");
+
+                }
+
+            }
+        );
+
+    });
+
+
+/* =====================================
+   ENTER NO LOGIN
+===================================== */
+
+document
+    .getElementById("studentName")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                enterMochila();
+
+            }
+
+        }
+    );
+
+
+/* =====================================
+   INICIALIZAÇÃO
+===================================== */
+
+if (data.user) {
+
+    startApp();
+
+}
+
+
+/*
+   O IndexedDB é carregado de forma
+   assíncrona. Depois de abrir, carregamos
+   os arquivos das anotações.
+*/
+
+request.addEventListener(
+    "success",
+    function() {
+
+        setTimeout(() => {
+
+            if (currentSubjectId) {
+
+                loadNoteFiles();
+
+            }
+
+        }, 300);
+
+    }
+);
+
+</script>
+
+</body>
+</html>
