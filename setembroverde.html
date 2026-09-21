@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Setembro Verde | Inclusão e Acessibilidade</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1fff5;
+            color: #173b27;
+            line-height: 1.6;
+        }
+
+        /* MENU */
+        header {
+            background: #087f3d;
+            color: white;
+            padding: 15px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px #0003;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #b8ffd0;
+        }
+
+        /* CAPA */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #075e2d, #13a957);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            margin-bottom: 30px;
+        }
+
+        .botao {
+            display: inline-block;
+            background: white;
+            color: #087f3d;
+            padding: 13px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .botao:hover {
+            transform: scale(1.05);
+            background: #d7ffe4;
+        }
+
+        /* SEÇÕES */
+        section {
+            padding: 70px 8%;
+        }
+
+        .titulo {
+            text-align: center;
+            color: #087f3d;
+            font-size: 34px;
+            margin-bottom: 35px;
+        }
+
+        .texto {
+            max-width: 950px;
+            margin: auto;
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px #0002;
+            transition: 0.3s;
+            border-top: 5px solid #0aa653;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+        }
+
+        .icone {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            color: #087f3d;
+            margin-bottom: 10px;
+        }
+
+        /* BENGALAS */
+        .bengalas {
+            background: #ddf9e6;
+        }
+
+        .bengala {
+            border-left: 7px solid #087f3d;
+            text-align: left;
+        }
+
+        .branca {
+            border-left-color: #777;
+        }
+
+        .verde {
+            border-left-color: #0aa653;
+        }
+
+        .vermelha {
+            border-left-color: #e53935;
+        }
+
+        /* GRÁFICO */
+        .grafico-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px #0002;
+        }
+
+        .barra {
+            margin: 25px 0;
+        }
+
+        .barra-titulo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .barra-fundo {
+            height: 35px;
+            background: #d9e8de;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .barra-preenchida {
+            height: 100%;
+            background: linear-gradient(90deg, #087f3d, #25c76b);
+            border-radius: 20px;
+        }
+
+        .sete {
+            width: 7.3%;
+        }
+
+        .noventa {
+            width: 92.7%;
+        }
+
+        .fonte {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+        }
+
+        /* VÍDEO */
+        .video-area {
+            background: #075e2d;
+            color: white;
+            text-align: center;
+        }
+
+        .video-area .titulo {
+            color: white;
+        }
+
+        video {
+            width: 90%;
+            max-width: 850px;
+            border-radius: 15px;
+            margin-top: 20px;
+            background: #000;
+        }
+
+        /* JOGO */
+        .jogo {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px #0002;
+            text-align: center;
+        }
+
+        #pergunta {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .opcao {
+            display: block;
+            width: 100%;
+            margin: 12px 0;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #d9f7e3;
+            color: #075e2d;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .opcao:hover {
+            background: #a9edc1;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        #proxima {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: #087f3d;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* FONTES */
+        .fontes {
+            background: #e2f8e9;
+        }
+
+        .fontes ul {
+            max-width: 850px;
+            margin: auto;
+            padding-left: 25px;
+        }
+
+        .fontes li {
+            margin: 12px 0;
+        }
+
+        .fontes a {
+            color: #087f3d;
+            font-weight: bold;
+        }
+
+        /* RODAPÉ */
+        footer {
+            background: #043b1d;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* CELULAR */
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav a {
+                margin: 5px;
+                font-size: 14px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            section {
+                padding: 50px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MENU -->
+    <header>
+
+        <div class="logo">
+            💚 Setembro Verde
+        </div>
+
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#campanha">Campanha</a>
+            <a href="#bengalas">Bengalas</a>
+            <a href="#dados">Dados</a>
+            <a href="#video">Vídeo</a>
+            <a href="#jogo">Jogo</a>
+        </nav>
+
+    </header>
+
+
+    <!-- INÍCIO -->
+    <section class="hero" id="inicio">
+
+        <div class="hero-content">
+
+            <h1>💚 Setembro Verde</h1>
+
+            <h2>Inclusão, respeito e acessibilidade</h2>
+
+            <p>
+                Um espaço para aprender, refletir e conhecer mais
+                sobre os direitos e a inclusão das pessoas com deficiência.
+            </p>
+
+            <a href="#campanha" class="botao">
+                Conheça a campanha
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- CAMPANHA -->
+    <section id="campanha">
+
+        <h2 class="titulo">
+            ♿ Setembro Verde
+        </h2>
+
+        <div class="texto">
+
+            <p>
+                O Setembro Verde é um período de conscientização sobre
+                os direitos, a inclusão e a participação das pessoas
+                com deficiência na sociedade.
+            </p>
+
+            <br>
+
+            <p>
+                O dia <strong>21 de setembro</strong> é o
+                <strong>Dia Nacional de Luta da Pessoa com Deficiência</strong>.
+                A data busca ampliar a conscientização sobre acessibilidade,
+                inclusão, respeito e igualdade de direitos.
+            </p>
+
+            <br>
+
+            <p>
+                A inclusão depende da participação de toda a sociedade.
+                Pequenas atitudes, informação e respeito podem ajudar
+                a construir ambientes mais acessíveis para todos.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icone">♿</div>
+                <h3>Acessibilidade</h3>
+                <p>
+                    Criar condições para que todas as pessoas possam
+                    participar dos espaços e atividades.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icone">🤝</div>
+                <h3>Respeito</h3>
+                <p>
+                    Respeitar as diferenças e evitar atitudes
+                    preconceituosas ou capacitistas.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icone">💚</div>
+                <h3>Inclusão</h3>
+                <p>
+                    Garantir participação e oportunidades para
+                    todas as pessoas.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icone">📢</div>
+                <h3>Conscientização</h3>
+                <p>
+                    Compartilhar informações ajuda a combater
+                    preconceitos e barreiras.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BENGALAS -->
+    <section class="bengalas" id="bengalas">
+
+        <h2 class="titulo">
+            👁️ Você conhece as cores das bengalas?
+        </h2>
+
+        <div class="cards">
+
+            <div class="card bengala branca">
+
+                <div class="icone">⚪</div>
+
+                <h3>Bengala Branca</h3>
+
+                <p>
+                    É utilizada por pessoas cegas como recurso
+                    de orientação e mobilidade.
+                </p>
+
+            </div>
+
+
+            <div class="card bengala verde">
+
+                <div class="icone">🟢</div>
+
+                <h3>Bengala Verde</h3>
+
+                <p>
+                    É utilizada para identificar pessoas com
+                    baixa visão.
+                </p>
+
+            </div>
+
+
+            <div class="card bengala vermelha">
+
+                <div class="icone">⚪🔴</div>
+
+                <h3>Bengala Branca e Vermelha</h3>
+
+                <p>
+                    É utilizada por pessoas com surdocegueira.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="texto" style="margin-top:30px;">
+
+            <p>
+                As cores das bengalas podem ajudar na identificação
+                da condição visual da pessoa. Entretanto, isso não
+                significa que devemos presumir que alguém precisa
+                de ajuda. O mais adequado é perguntar antes de
+                oferecer auxílio.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- DADOS -->
+    <section id="dados">
+
+        <h2 class="titulo">
+            📊 Dados sobre deficiência no Brasil
+        </h2>
+
+        <div class="grafico-container">
+
+            <p>
+                Segundo dados apresentados pelo IBGE referentes ao
+                Censo Demográfico 2022, pessoas com deficiência
+                representavam aproximadamente <strong>7,3%</strong>
+                da população brasileira de 2 anos ou mais.
+            </p>
+
+
+            <div class="barra">
+
+                <div class="barra-titulo">
+                    <span>Pessoas com deficiência</span>
+                    <span>7,3%</span>
+                </div>
+
+                <div class="barra-fundo">
+
+                    <div class="barra-preenchida sete"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="barra">
+
+                <div class="barra-titulo">
+                    <span>Pessoas sem deficiência</span>
+                    <span>92,7%</span>
+                </div>
+
+                <div class="barra-fundo">
+
+                    <div class="barra-preenchida noventa"></div>
+
+                </div>
+
+            </div>
+
+
+            <p class="fonte">
+                Fonte: IBGE – Censo Demográfico 2022.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- VÍDEO -->
+    <section class="video-area" id="video">
+
+        <h2 class="titulo">
+            🎥 Vídeo de conscientização
+        </h2>
+
+        <p>
+            Assista ao vídeo sobre o Dia Nacional de Luta
+            da Pessoa com Deficiência.
+        </p>
+
+
+        <!--
+            COLOQUE SEU VÍDEO NA MESMA PASTA DO INDEX.HTML
+            E CHAME O ARQUIVO DE:
+
+            video-setembro-verde.mp4
+        -->
+
+        <video controls>
+
+            <source
+                src="video-setembro-verde.mp4"
+                type="video/mp4">
+
+            Seu navegador não suporta vídeos.
+
+        </video>
+
+    </section>
+
+
+    <!-- JOGO -->
+    <section id="jogo">
+
+        <h2 class="titulo">
+            🎮 Jogo: Teste seus conhecimentos
+        </h2>
+
+        <div class="jogo">
+
+            <div id="pergunta"></div>
+
+            <div id="opcoes"></div>
+
+            <div id="resultado"></div>
+
+            <button id="proxima" onclick="proximaPergunta()">
+                Próxima pergunta
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FONTES -->
+    <section class="fontes">
+
+        <h2 class="titulo">
+            📚 Fontes de pesquisa
+        </h2>
+
+        <ul>
+
+            <li>
+                <a href="https://www.ibge.gov.br/"
+                   target="_blank">
+                    IBGE – Instituto Brasileiro de Geografia e Estatística
+                </a>
+            </li>
+
+            <li>
+                <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14951.htm"
+                   target="_blank">
+                    Lei nº 14.951/2024 – Cores das bengalas
+                </a>
+            </li>
+
+            <li>
+                <a href="https://bvsms.saude.gov.br/"
+                   target="_blank">
+                    Biblioteca Virtual em Saúde – Ministério da Saúde
+                </a>
+            </li>
+
+            <li>
+                <a href="https://www.gov.br/"
+                   target="_blank">
+                    Governo Federal
+                </a>
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- RODAPÉ -->
+    <footer>
+
+        <h3>💚 Setembro Verde</h3>
+
+        <p>
+            Informação, respeito e acessibilidade.
+        </p>
+
+        <p>
+            21 de setembro – Dia Nacional de Luta da Pessoa com Deficiência
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT DO JOGO -->
+    <script>
+
+        const perguntas = [
+
+            {
+                pergunta:
+                "Qual é a data do Dia Nacional de Luta da Pessoa com Deficiência?",
+
+                opcoes: [
+                    "7 de setembro",
+                    "21 de setembro",
+                    "12 de outubro",
+                    "15 de novembro"
+                ],
+
+                correta: 1
+            },
+
+
+            {
+                pergunta:
+                "Qual cor de bengala é utilizada para identificar pessoas com baixa visão?",
+
+                opcoes: [
+                    "Verde",
+                    "Azul",
+                    "Amarela",
+                    "Preta"
+                ],
+
+                correta: 0
+            },
+
+
+            {
+                pergunta:
+                "Qual atitude é mais adequada ao oferecer ajuda a uma pessoa com deficiência visual?",
+
+                opcoes: [
+                    "Pegar a pessoa pelo braço sem avisar",
+                    "Ignorar a pessoa",
+                    "Perguntar se ela precisa de ajuda",
+                    "Falar muito alto"
+                ],
+
+                correta: 2
+            },
+
+
+            {
+                pergunta:
+                "O que significa acessibilidade?",
+
+                opcoes: [
+                    "Criar condições para participação de todas as pessoas",
+                    "Separar pessoas com deficiência",
+                    "Impedir o acesso a determinados lugares",
+                    "Criar apenas rampas"
+                ],
+
+                correta: 0
+            },
+
+
+            {
+                pergunta:
+                "O que o Setembro Verde busca promover?",
+
+                opcoes: [
+                    "Apenas atividades esportivas",
+                    "Inclusão, respeito e conscientização",
+                    "Somente campanhas comerciais",
+                    "Apenas eventos escolares"
+                ],
+
+                correta: 1
+            }
+
+        ];
+
+
+        let perguntaAtual = 0;
+        let pontos = 0;
+
+
+        function mostrarPergunta() {
+
+            const pergunta = perguntas[perguntaAtual];
+
+            document.getElementById("pergunta").innerText =
+                pergunta.pergunta;
+
+            const opcoes =
+                document.getElementById("opcoes");
+
+            opcoes.innerHTML = "";
+
+            document.getElementById("resultado").innerText = "";
+
+            document.getElementById("proxima").style.display = "none";
+
+
+            pergunta.opcoes.forEach((opcao, indice) => {
+
+                const botao =
+                    document.createElement("button");
+
+                botao.innerText = opcao;
+
+                botao.className = "opcao";
+
+                botao.onclick = function() {
+
+                    verificarResposta(indice);
+
+                };
+
+                opcoes.appendChild(botao);
+
+            });
+
+        }
+
+
+        function verificarResposta(indice) {
+
+            const pergunta = perguntas[perguntaAtual];
+
+            const resultado =
+                document.getElementById("resultado");
+
+
+            if (indice === pergunta.correta) {
+
+                pontos++;
+
+                resultado.innerText =
+                    "✅ Resposta correta! Muito bem!";
+
+            } else {
+
+                resultado.innerText =
+                    "❌ Resposta incorreta. Continue aprendendo!";
+
+            }
+
+
+            document.querySelectorAll(".opcao")
+                .forEach(botao => {
+
+                    botao.disabled = true;
+
+                });
+
+
+            document.getElementById("proxima").style.display =
+                "inline-block";
+
+        }
+
+
+        function proximaPergunta() {
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+
+                mostrarPergunta();
+
+            } else {
+
+                document.getElementById("pergunta").innerText =
+                    "🎉 Jogo terminado!";
+
+                document.getElementById("opcoes").innerHTML = "";
+
+                document.getElementById("resultado").innerText =
+                    "Você fez " + pontos +
+                    " de " + perguntas.length +
+                    " pontos! 💚";
+
+                document.getElementById("proxima").style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        mostrarPergunta();
+
+    </script>
+
+</body>
+</html>
